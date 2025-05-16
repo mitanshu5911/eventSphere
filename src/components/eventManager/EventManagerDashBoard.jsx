@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { useAuth } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from 'recharts';
 
 const EventManagerDashboard = () => {
@@ -60,9 +60,15 @@ const Sidebar = () => (
   <motion.div className="w-64 bg-blue-900 text-white p-6 space-y-4 min-h-screen">
     <h2 className="text-xl font-bold">Dashboard</h2>
     <ul>
-      <li className="hover:bg-blue-700 p-2 rounded">Bookings</li>
-      <li className="hover:bg-blue-700 p-2 rounded">Earnings</li>
-      <li className="hover:bg-blue-700 p-2 rounded">Profile</li>
+      <li className="hover:bg-blue-700 p-2 rounded">
+        <Link to="/checkbookings">Bookings</Link>
+      </li>
+      <li className="hover:bg-blue-700 p-2 rounded">
+        <Link to="/earnings">Earnings</Link>
+      </li>
+      <li className="hover:bg-blue-700 p-2 rounded">
+        <Link to="/profile">Profile</Link>
+      </li>
     </ul>
   </motion.div>
 );

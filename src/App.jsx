@@ -8,6 +8,9 @@ import { Route, Routes } from 'react-router-dom'
 import CustomerDashBoard from './components/customer/CustomerDashBoard'
 import EventManagerDashBoard from './components/eventManager/EventManagerDashBoard'
 import EventManagerProfile from './components/eventManager/EventManagerProfile'
+import SearchEventManager from './components/customer/SearchEventManager'
+import CheckBooking from './components/eventManager/CheckBooking'
+
 function App() {
   return (
     <>
@@ -19,6 +22,8 @@ function App() {
         <Route path='/customer-dashboard' element={<CustomerDashBoard/>} />
         <Route path = '/event-manager-dashboard' element= {<EventManagerDashBoard/>} />
         <Route path = '/event-manager-profile' element = {<EventManagerProfile/>}/>
+        <Route path='/search_event_manager' element = {<SearchEventManager/>}/>
+        <Route path='checkbookings' element = {<CheckBooking/>}/>
       </Routes>
       <Footer/>
     </>

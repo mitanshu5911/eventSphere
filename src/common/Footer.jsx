@@ -14,7 +14,7 @@ const teamMembers = [
     email: "jitesh0535.be23@chitakara.edu.in",
   },
   {
-    name: "Ruman Singal",
+    name: "Ruman Singla",
     roll: "2310991196",
     email: "ruman1196.be23@chitkara.edu.in",
   },

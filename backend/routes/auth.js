@@ -4,12 +4,12 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 require('dotenv').config();
-
+const Booking = require('../models/Booking');
+// const EventManagerProfile = require('../models/EventManagerProfile');
 const { authenticateUser } = require('../middlewares/auth');
 const {
   createOrUpdateProfile,
-  getProfile,
-  deleteProfile,
+  getEventManagers
 } = require('../controllers/EventManagerController');
 
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -49,7 +49,7 @@ router.post('/login', async (req, res) => {
     jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
       if (err) throw err;
       // Return the complete user object with _id, email, and userType
-      res.json({ token, user: { _id: user._id, email: user.email, userType: user.userType } });
+      res.json({ token, user: { _id: user._id, email: user.email, userType: user.userType, name:user.name } });
     });
   } catch (error) {
     console.error('Login error:', error.message);
@@ -57,13 +57,51 @@ router.post('/login', async (req, res) => {
   }
 });
 
+router.post('/bookings', async (req, res) => {
+  try {
+    const { eventManagerId, userId, email, name, phone, eventType, dateFrom, dateTo, description } = req.body;
+
+    const newBooking = new Booking({
+      eventManagerId,
+      userId,
+      email,
+      name,
+      phone,
+      eventType,
+      dateFrom,
+      dateTo,
+      description,
+    });
+
+    await newBooking.save();
+    res.status(201).json(newBooking);
+  } catch (err) {
+    console.error('Error creating booking:', err);
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
 
 
-// Profile Routes
+
+router.get('/event-manager/:eventManagerId', async (req, res) => {
+  try {
+    const { eventManagerId } = req.params;
+
+    const bookings = await Booking.find({ eventManagerId }).populate('userId', 'name email phone');
+
+    if (!bookings.length) {
+      return res.status(404).json({ msg: 'No bookings found for this Event Manager' });
+    }
+
+    res.json(bookings);
+  } catch (err) {
+    console.error('Error fetching bookings:', err);
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
+
 router.post('/event-managers-data', createOrUpdateProfile);
-// router.get('/event-managers-data/:userId', getProfile);
+router.get('/event-managers', getEventManagers);
 
-// Uncomment and implement when ready
-// router.delete('/event-managers-data/:userId', authenticateUser, deleteProfile);
 
 module.exports = router;

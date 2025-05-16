@@ -20,7 +20,6 @@ exports.createOrUpdateProfile = async (req, res) => {
     logo
   } = req.body;
 
-  // ✅ Simple Manual Validation
   if (!userId || typeof userId !== 'string') {
     return res.status(400).json({ msg: 'Invalid or missing userId' });
   }
@@ -78,5 +77,29 @@ exports.createOrUpdateProfile = async (req, res) => {
   } catch (err) {
     console.error("Error saving profile:", err);
     res.status(500).json({ msg: "Failed to save profile. Please try again." });
+  }
+};
+
+exports.getEventManagers = async (req, res) => {
+  try {
+    const { search } = req.query;
+    let query = {};
+
+    if (search) {
+      const regex = new RegExp(search, 'i'); 
+      query = {
+        $or: [
+          { businessName: regex },
+          { cities: regex },
+          { headOfOrganization: regex },
+        ],
+      };
+    }
+
+    const managers = await EventManagerProfile.find(query);
+    res.json(managers);
+  } catch (err) {
+    console.error('Error fetching event managers:', err);
+    res.status(500).json({ msg: 'Server error' });
   }
 };

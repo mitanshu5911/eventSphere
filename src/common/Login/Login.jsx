@@ -25,7 +25,7 @@ const Login = () => {
       // Save the full user data, now including _id
       console.log(user._id);
       login(user, token);
-      alert(user.userType);
+      // alert(user.userType);
       navigate(user.userType === "customer" ? "/customer-dashboard" : "/event-manager-dashboard");
     } catch (err) {
       setError(err.response?.data?.msg || "Login failed. Please try again.");
